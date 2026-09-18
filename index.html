@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Annotation Ledger</title>
+<meta name="description" content="Companion site for 'Building Trustworthy Mental Health Benchmarks on Bluesky: A Validation-Aware Weak-Supervision Framework' — dual SI/MH disclosure benchmarking on decentralized social media.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%239c6f22%22 stroke-width=%222%22><rect x=%223%22 y=%223%22 width=%2218%22 height=%2218%22/><path d=%22M8 8h8M8 12h5M8 16h8%22/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<!-- ============================= ICON SPRITE ============================= -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <symbol id="i-butterfly" viewBox="0 0 24 24"><path d="M12 4c0-1 2-2 4-2s5 2 5 5-2 5-5 6c3 1 5 3 5 6s-3 5-5 5-4-1-4-2M12 4c0-1-2-2-4-2S3 4 3 7s2 5 5 6c-3 1-5 3-5 6s3 5 5 5 4-1 4-2M12 4v15"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 5h16l-6 8v6l-4 2v-8L4 5Z"/></symbol>
+  <symbol id="i-stamp" viewBox="0 0 24 24"><circle cx="12" cy="10" r="6"/><path d="m9 10 2 2 4-4M7 20h10M9 16l-1.5 4M15 16l1.5 4"/></symbol>
+  <symbol id="i-pencil-check" viewBox="0 0 24 24"><path d="M4 20l3-1 10-10-2-2L5 17l-1 3ZM14 6l2 2"/><path d="m17 14 2 2 4-4" transform="translate(0 3)"/></symbol>
+  <symbol id="i-bars" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20v3"/></symbol>
+  <symbol id="i-gavel" viewBox="0 0 24 24"><path d="m14 4 6 6M6.5 11.5l6-6 4 4-6 6-4-4Zm-4 4 4 4M3 21h9M3 21v-3l3-3"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12h6M9 16h6M9 8h2"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6"/></symbol>
+  <symbol id="i-shield-lock" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3Z"/><rect x="9.5" y="11" width="5" height="4" rx="1"/><path d="M10.5 11V9.5a1.5 1.5 0 0 1 3 0V11"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17h.01"/></symbol>
+  <symbol id="i-block" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></symbol>
+  <symbol id="i-doc-out" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 15h6M9 11h6M9 19h3"/></symbol>
+  <symbol id="i-quote" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
+  <symbol id="i-chart-up" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></symbol>
+  <symbol id="i-lock-open" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 8.6-3.5"/></symbol>
+</defs>
+</svg>
+
+<div id="scroll-progress"></div>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <div class="brand"><svg class="brand-mark icon"><use href="#i-butterfly"/></svg> Annotation Ledger</div>
+    <nav class="nav-links" id="nav-links">
+      <a href="#overview">Overview</a>
+      <a href="#pipeline">Pipeline</a>
+      <a href="#dataset">Dataset</a>
+      <a href="#validation">Validation</a>
+      <a href="#benchmarks">Benchmarks</a>
+      <a href="#synthesis">Synthesis</a>
+      <a href="#governance">Governance</a>
+      <a href="#limitations">Limits</a>
+      <a href="#cite">Cite</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
+        <svg class="moon icon"><use href="#i-moon"/></svg>
+        <svg class="sun icon"><use href="#i-sun"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================= HERO ============================= -->
+<section class="hero" style="border-top:none;">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="stamp">Accepted · HICSS-60</div>
+        <h1 class="title">
+          <span class="redact">Building Trustworthy Mental Health Benchmarks on Bluesky<span class="redact-bar" aria-hidden="true"></span></span>
+        </h1>
+        <p class="lede" style="margin-bottom:24px;">A validation-aware weak-supervision framework for constructing and evaluating <b>suicidal ideation (SI)</b> and broader <b>mental health (MH)</b> disclosure benchmarks on Bluesky — a decentralized social network built on the AT Protocol.</p>
+        <p class="authors">
+          <b><a href="https://scholar.google.com/citations?user=NRzdAVEAAAAJ&hl=en" target="_blank" rel="noopener">Gaurab Chhetri</a></b> · Dept. of Computer Science &nbsp;·&nbsp;
+          <b><a href="https://scholar.google.com/citations?user=x55wcQIAAAAJ&hl=en" target="_blank" rel="noopener">Anandi Dutta, Ph.D.</a></b> · Ingram School of Engineering &nbsp;·&nbsp;
+          <b><a href="https://scholar.google.com/citations?user=qK-YgxAAAAAJ&hl=en" target="_blank" rel="noopener">Subasish Das, Ph.D.</a></b> · Ingram School of Engineering
+        </p>
+        <p class="affil">TEXAS STATE UNIVERSITY, SAN MARCOS, TX</p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#">
+            <svg class="icon"><use href="#i-doc-out"/></svg> Read the Paper
+          </a>
+          <a class="btn btn-ghost" href="#cite"><svg class="icon"><use href="#i-quote"/></svg> Cite this Work</a>
+          <a class="btn btn-ghost" href="#benchmarks"><svg class="icon"><use href="#i-chart-up"/></svg> Explore Benchmarks</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="evidence-card">
+          <div class="evidence-head"><span>EXHIBIT — SAMPLE ADJUDICATION</span><span>#0412</span></div>
+          <div class="evidence-body">
+            <p style="margin:0 0 12px;">"can't stop thinking about how much easier everything would be if i just wasn't here anymore"</p>
+            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+              <span class="tagmark si strike">LLM: 0</span>
+              <svg class="icon" style="width:14px;height:14px;color:var(--ink-faint);"><use href="#i-arrow"/></svg>
+              <span class="tagmark si">Human: 1</span>
+              <span class="small" style="font-family:var(--font-mono); font-size:.7rem;">— passive death wish, missed by weak label</span>
+            </div>
+          </div>
+          <div class="evidence-row"><span class="k">Task</span><span class="v">SI</span></div>
+          <div class="evidence-row"><span class="k">Error type</span><span class="v">False negative</span></div>
+          <div class="evidence-row"><span class="k">Adjudicators</span><span class="v">2 / consensus</span></div>
+        </div>
+
+        <div class="hero-stats">
+          <div class="hero-stat"><span class="num" data-count="8346">0</span><span class="lbl">SI posts</span></div>
+          <div class="hero-stat"><span class="num" data-count="9988">0</span><span class="lbl">MH posts</span></div>
+        </div>
+        <div class="hero-stats" style="margin-top:1px;">
+          <div class="hero-stat"><span class="num" data-count="0.916" data-decimals="3">0</span><span class="lbl">Top SI F1 (CV)</span></div>
+          <div class="hero-stat"><span class="num" data-count="0.905" data-decimals="3">0</span><span class="lbl">Top MH F1 (CV)</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= OVERVIEW ============================= -->
+<section id="overview">
+  <div class="container">
+    <div class="section-head"><span class="sec-no">§01</span><div class="section-head-text">
+      <p class="kicker">Overview</p>
+      <h2 class="section-title">Why decentralized social media changes the benchmark</h2>
+      <p class="section-desc">Bluesky's AT Protocol separates identity, hosting, relays, and moderation across independent actors. That makes public data collection more reproducible — but it also means model performance cannot be judged apart from how labels were produced, validated, and governed.</p>
+    </div></div>
+
+    <p class="lede">Decentralized social platforms create new opportunities and challenges for computational mental health research because data access, moderation, labeling, and deployment responsibilities are distributed across multiple technical and governance layers. This study treats mental health disclosure detection as a <b>system-level benchmarking problem</b> — not a leaderboard exercise.</p>
+
+    <div class="grid grid-4" style="margin-top:32px;">
+      <div class="contrib-card">
+        <svg class="icon ic" style="width:24px;height:24px;"><use href="#i-layers"/></svg>
+        <h3>End-to-end pipeline</h3>
+        <p>Bluesky firehose collection, weak labeling, human validation, and benchmarking in one auditable system.</p>
+      </div>
+      <div class="contrib-card">
+        <svg class="icon ic" style="width:24px;height:24px;"><use href="#i-shield-lock"/></svg>
+        <h3>Decentralized setting</h3>
+        <p>Evaluates access, reproducibility, deployment, and governance implications specific to AT Protocol data.</p>
+      </div>
+      <div class="contrib-card">
+        <svg class="icon ic" style="width:24px;height:24px;"><use href="#i-chart-up"/></svg>
+        <h3>Dual-task benchmarking</h3>
+        <p>SI and MH models compared on performance, validation sensitivity, and computational efficiency.</p>
+      </div>
+      <div class="contrib-card">
+        <svg class="icon ic" style="width:24px;height:24px;"><use href="#i-check-circle"/></svg>
+        <h3>Label audit</h3>
+        <p>Human validation reveals task-specific weak-label errors: false negatives for SI, false positives for MH.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= PIPELINE ============================= -->
+<section id="pipeline">
+  <div class="container">
+    <div class="section-head"><span class="sec-no">§02</span><div class="section-head-text">
+      <p class="kicker">System Design</p>
+      <h2 class="section-title">A six-stage, validation-aware pipeline</h2>
+      <p class="section-desc">Click a stage to see what happens at that layer. The same architecture is applied to both the SI and MH tasks independently.</p>
+    </div></div>
+
+    <div class="pipeline" id="pipeline-nodes">
+      <div class="pipe-node active" data-i="0"><span class="pn-no">01</span><svg class="icon ic"><use href="#i-butterfly"/></svg><div class="pn-title">AT Protocol Firehose</div></div>
+      <div class="pipe-node" data-i="1"><span class="pn-no">02</span><svg class="icon ic"><use href="#i-filter"/></svg><div class="pn-title">Lexicon Retrieval</div></div>
+      <div class="pipe-node" data-i="2"><span class="pn-no">03</span><svg class="icon ic"><use href="#i-stamp"/></svg><div class="pn-title">Llama-3-8B Weak Labels</div></div>
+      <div class="pipe-node" data-i="3"><span class="pn-no">04</span><svg class="icon ic"><use href="#i-pencil-check"/></svg><div class="pn-title">Human Validation</div></div>
+      <div class="pipe-node" data-i="4"><span class="pn-no">05</span><svg class="icon ic"><use href="#i-bars"/></svg><div class="pn-title">Model Benchmarking</div></div>
+      <div class="pipe-node" data-i="5"><span class="pn-no">06</span><svg class="icon ic"><use href="#i-gavel"/></svg><div class="pn-title">Governance Interpretation</div></div>
+    </div>
+
+    <div class="pipe-detail" id="pipe-detail-text">
+      <b>01 · AT Protocol Firehose —</b> Public posts are collected via a reproducible firehose pipeline (adapted from the CognitiveSky framework), avoiding privileged API access or centralized rate limits. Public availability does not imply clinical validity or consent for individual-level intervention.
+    </div>
+
+    <div class="req-list">
+      <div class="req-row"><span class="rn">A</span><div><h4>Reproducible ingestion</h4><p>Collect public posts from a decentralized stream without relying on privileged platform access.</p></div></div>
+      <div class="req-row"><span class="rn">B</span><div><h4>Scalable annotation with auditability</h4><p>Use weak supervision for scale while preserving a human-validation layer for construct alignment.</p></div></div>
+      <div class="req-row"><span class="rn">C</span><div><h4>Deployment-aware evaluation</h4><p>Report predictive performance together with validation sensitivity, model size, and computational cost.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= DATASET ============================= -->
+<section id="dataset">
+  <div class="container">
+    <div class="section-head"><span class="sec-no">§03</span><div class="section-head-text">
+      <p class="kicker">Corpus Construction</p>
+      <h2 class="section-title">Two task-specific Bluesky corpora</h2>
+      <p class="section-desc">Collected May–June 2025 via lexicon-triggered firehose retrieval. Task construction — not just modeling — shapes downstream interpretation.</p>
+    </div></div>
+
+    <div class="grid grid-2">
+      <div class="dataset-card">
+        <h4 style="color:var(--si);">Suicidal Ideation (SI) corpus</h4>
+        <div class="sub">14-DAY WINDOW · 6,648 UNIQUE USERS · 1.3 POSTS/USER</div>
+        <div class="bar-row">
+          <div class="bl"><span>SI-positive</span><span><b>2,180</b> posts · 26.1%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="background:var(--si);" data-w="26.1"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bl"><span>SI-negative</span><span><b>6,166</b> posts · 73.9%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="background:var(--ink-faint);" data-w="73.9"></div></div>
+        </div>
+        <p class="small" style="margin-top:14px; line-height:1.6;">Narrower construct: first-person desire to die, passive death wish, self-harm ideation, or planning language. Lower positive rate despite a suicide-focused lexicon — many matching posts discuss public events, fiction, jokes, news, or other people.</p>
+      </div>
+      <div class="dataset-card">
+        <h4 style="color:var(--mh);">Mental Health (MH) corpus</h4>
+        <div class="sub">2-MONTH WINDOW · 9,988 LABELED POSTS</div>
+        <div class="bar-row">
+          <div class="bl"><span>MH-positive</span><span><b>4,793</b> posts · 48.0%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="background:var(--mh);" data-w="48.0"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bl"><span>MH-negative</span><span><b>5,195</b> posts · 52.0%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="background:var(--ink-faint);" data-w="52.0"></div></div>
+        </div>
+        <p class="small" style="margin-top:14px; line-height:1.6;">Broader construct: depression, anxiety, panic, insomnia, hopelessness, and help-seeking. Higher, more balanced positive rate — part of why MH models score well against weak labels even though human agreement is weaker.</p>
+      </div>
+    </div>
+
+    <div class="note"><b>Note —</b> only publicly available Bluesky posts were used. The benchmark is intended for aggregate research and model evaluation — not clinical diagnosis or automated individual-level intervention. The unit of analysis is the <b>post</b>, not the user; the pipeline uses no longitudinal history, reply context, or profile metadata.</div>
+  </div>
+</section>
+
+<!-- ============================= VALIDATION ============================= -->
+<section id="validation">
+  <div class="container">
+    <div class="section-head"><span class="sec-no">§04</span><div class="section-head-text">
+      <p class="kicker">Human Validation Layer</p>
+      <h2 class="section-title">Weak labels are not ground truth</h2>
+      <p class="section-desc">Two annotators independently double-coded stratified validation subsets, then adjudicated disagreements. LLM (Llama-3-8B) weak labels were scored against the adjudicated human reference.</p>
+    </div></div>
+
+    <div class="grid grid-2">
+      <div class="val-card si">
+        <h4><span style="color:var(--si);">Suicidal Ideation</span> <span class="small">(n = 276)</span></h4>
+        <div class="val-metric-grid">
+          <div class="val-metric"><div class="vlbl">Observed agreement</div><div class="vval">88.8%</div></div>
+          <div class="val-metric"><div class="vlbl">Precision</div><div class="vval">0.947</div></div>
+          <div class="val-metric"><div class="vlbl">Recall</div><div class="vval">0.554</div></div>
+          <div class="val-metric"><div class="vlbl">Positive-class F1</div><div class="vval">0.699</div></div>
+        </div>
+        <div class="kappa-scale">
+          <div class="small" style="font-family:var(--font-mono); margin-bottom:2px;">LLM–HUMAN COHEN'S κ</div>
+          <div class="track"><div class="track-fill" style="width:63.6%; color:var(--si);"></div><div class="marker" style="left:63.6%;" data-val="κ = 0.636"></div></div>
+          <div class="kappa-labels"><span>0 · chance</span><span>1 · perfect</span></div>
+        </div>
+        <span class="noise-tag fn"><svg class="icon" style="width:13px;height:13px;"><use href="#i-warn"/></svg> Dominant error: false negatives</span>
+        <p class="small" style="margin-top:12px; line-height:1.6;">Human–human reliability was strongest here (κ = 0.762). The LLM under-calls indirect, short, or context-dependent expressions of despair that human annotators still treat as self-directed.</p>
+      </div>
+
+      <div class="val-card mh">
+        <h4><span style="color:var(--mh);">Mental Health</span> <span class="small">(n = 250)</span></h4>
+        <div class="val-metric-grid">
+          <div class="val-metric"><div class="vlbl">Observed agreement</div><div class="vval">55.6%</div></div>
+          <div class="val-metric"><div class="vlbl">Precision</div><div class="vval">0.276</div></div>
+          <div class="val-metric"><div class="vlbl">Recall</div><div class="vval">0.977</div></div>
+          <div class="val-metric"><div class="vlbl">Positive-class F1</div><div class="vval">0.431</div></div>
+        </div>
+        <div class="kappa-scale">
+          <div class="small" style="font-family:var(--font-mono); margin-bottom:2px;">LLM–HUMAN COHEN'S κ</div>
+          <div class="track"><div class="track-fill" style="width:22.2%; color:var(--mh);"></div><div class="marker" style="left:22.2%;" data-val="κ = 0.222"></div></div>
+          <div class="kappa-labels"><span>0 · chance</span><span>1 · perfect</span></div>
+        </div>
+        <span class="noise-tag fp"><svg class="icon" style="width:13px;height:13px;"><use href="#i-warn"/></svg> Dominant error: false positives</span>
+        <p class="small" style="margin-top:12px; line-height:1.6;">The LLM labeled 60.8% of the sample MH-positive, but only 17.2% held up after human adjudication — systematic over-inclusion of advocacy, metaphor, and third-person discussion.</p>
+      </div>
+    </div>
+
+    <div class="table-wrap" style="margin-top:24px;">
+      <table class="data" id="table-validation">
+        <caption>Table 1 · Human validation of LLM-assisted weak labels</caption>
+        <thead><tr><th>Measure</th><th>SI</th><th>MH</th></tr></thead>
+        <tbody>
+          <tr><td>Validation sample</td><td class="num">276</td><td class="num">250</td></tr>
+          <tr><td>Human–human Cohen's κ</td><td class="num">0.762</td><td class="num">0.595</td></tr>
+          <tr><td>LLM–human observed agreement</td><td class="num">88.8%</td><td class="num">55.6%</td></tr>
+          <tr><td>LLM–human Cohen's κ</td><td class="num">0.636</td><td class="num">0.222</td></tr>
+          <tr><td>LLM–human precision</td><td class="num">0.947</td><td class="num">0.276</td></tr>
+          <tr><td>LLM–human recall</td><td class="num">0.554</td><td class="num">0.977</td></tr>
+          <tr><td>Positive-class F1</td><td class="num">0.699</td><td class="num">0.431</td></tr>
+          <tr><td>Macro-F1</td><td class="num">0.815</td><td class="num">0.533</td></tr>
+          <tr><td>Dominant noise mode</td><td>False negative</td><td>False positive</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-family:var(--font-display); font-weight:600; font-size:1.2rem; margin:40px 0 16px;">Annotation boundary rules</h3>
+    <div class="boundary-grid">
+      <div class="boundary-card">
+        <h5>SI</h5>
+        <div class="lbl2 pos"><svg class="icon" style="width:12px;height:12px;"><use href="#i-check-circle"/></svg>In scope</div>
+        <p>First-person desire to die, passive death wish, current self-harm ideation, planning language, or recent self-directed suicidal intent.</p>
+        <div class="lbl2 neg"><svg class="icon" style="width:12px;height:12px;"><use href="#i-block"/></svg>Excluded</div>
+        <p>News about suicide, advocacy posts, condolences, quotations, jokes, hypotheticals, third-person discussion.</p>
+      </div>
+      <div class="boundary-card">
+        <h5>MH</h5>
+        <div class="lbl2 pos"><svg class="icon" style="width:12px;height:12px;"><use href="#i-check-circle"/></svg>In scope</div>
+        <p>First-person disclosure of depression, anxiety, panic, hopelessness, distress-related insomnia, help-seeking, or self-harm-related distress.</p>
+        <div class="lbl2 neg"><svg class="icon" style="width:12px;height:12px;"><use href="#i-block"/></svg>Excluded</div>
+        <p>Awareness posts, clinical information sharing, political commentary, metaphors, sarcasm, statements about another person.</p>
+      </div>
+      <div class="boundary-card">
+        <h5>Ambiguous content</h5>
+        <div class="lbl2 pos"><svg class="icon" style="width:12px;height:12px;"><use href="#i-check-circle"/></svg>Positive only if</div>
+        <p>Self-directed disclosure was explicit enough to support the task definition.</p>
+        <div class="lbl2 neg"><svg class="icon" style="width:12px;height:12px;"><use href="#i-block"/></svg>Negative if</div>
+        <p>Context was insufficient, quoted, purely rhetorical, or not attributable to the author.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= BENCHMARKS ============================= -->
+<section id="benchmarks">
+  <div class="container">
+    <div class="section-head"><span class="sec-no">§05</span><div class="section-head-text">
+      <p class="kicker">Model Benchmarking</p>
+      <h2 class="section-title">SI and MH model performance</h2>
+      <p class="section-desc">Scores are measured against each task's label source unless noted otherwise — cross-validation reflects consistency with the weak-labeling function, not clinical ground truth. Click column headers to sort; toggle between tasks below.</p>
+    </div></div>
+
+    <div class="task-toggle" role="tablist">
+      <button class="active" data-task="si">Suicidal Ideation</button>
+      <button data-task="mh">Mental Health</button>
+    </div>
+
+    <!-- SI PANE -->
+    <div class="task-pane active" id="pane-si">
+      <div class="stat-row">
+        <div class="stat-pill">Holdout best: <b>RoBERTa-base — F1 0.792</b></div>
+        <div class="stat-pill">Cross-val best: <b>BERT+LSTM — F1 0.916</b></div>
+        <div class="stat-pill">Best efficiency: <b>DistilBERT — 423s</b></div>
+        <div class="stat-pill">Highest recall: <b>BERT+LSTM+Attn — 0.870</b></div>
+      </div>
+
+      <div class="grid grid-2" style="margin-top:1px;">
+        <div class="chart-card">
+          <h4>Holdout vs. stratified 5-fold CV</h4>
+          <div class="sub">EVERY MODEL IMPROVES UNDER CV — HYBRID MODELS BENEFIT MOST</div>
+          <div class="chart-canvas-wrap"><canvas id="chart-si-cv"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h4>Efficiency profile</h4>
+          <div class="sub">HOLDOUT F1 VS. TRAINING TIME — BUBBLE SIZE = RECALL</div>
+          <div class="chart-canvas-wrap"><canvas id="chart-si-eff"></canvas></div>
+        </div>
+      </div>
+
+      <div class="table-wrap" style="margin-top:20px;">
+        <table class="data sortable" id="table-si-holdout">
+          <caption>Table 5 · SI holdout validation performance (70/30 stratified split)</caption>
+          <thead><tr>
+            <th data-type="text">Model</th><th data-type="num">Accuracy</th><th data-type="num">Precision</th>
+            <th data-type="num">Recall</th><th data-type="num" data-sort="desc">F1</th><th data-type="num">Train time (s)</th>
+          </tr></thead>
+          <tbody>
+            <tr class="best"><td>RoBERTa-base</td><td class="num">0.892</td><td class="num">0.799</td><td class="num">0.784</td><td class="num">0.792</td><td class="num">841</td></tr>
+            <tr><td>ELECTRA-base</td><td class="num">0.891</td><td class="num">0.813</td><td class="num">0.757</td><td class="num">0.784</td><td class="num">834</td></tr>
+            <tr><td>ALBERT-base-v2</td><td class="num">0.886</td><td class="num">0.789</td><td class="num">0.768</td><td class="num">0.778</td><td class="num">908</td></tr>
+            <tr><td>BERT-base</td><td class="num">0.883</td><td class="num">0.785</td><td class="num">0.763</td><td class="num">0.774</td><td class="num">835</td></tr>
+            <tr><td>DistilBERT-base</td><td class="num">0.883</td><td class="num">0.780</td><td class="num">0.766</td><td class="num">0.773</td><td class="num">423</td></tr>
+            <tr><td>XLNet-base</td><td class="num">0.884</td><td class="num">0.797</td><td class="num">0.745</td><td class="num">0.770</td><td class="num">1359</td></tr>
+            <tr><td>BERT+LSTM</td><td class="num">0.892</td><td class="num">0.873</td><td class="num">0.687</td><td class="num">0.769</td><td class="num">4524</td></tr>
+            <tr><td>BERT+LSTM+Attention</td><td class="num">0.834</td><td class="num">0.633</td><td class="num">0.870</td><td class="num">0.733</td><td class="num">4512</td></tr>
+            <tr><td>MobileBERT</td><td class="num">0.862</td><td class="num">0.775</td><td class="num">0.665</td><td class="num">0.716</td><td class="num">563</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-wrap" style="margin-top:20px;">
+        <table class="data sortable" id="table-si-cv">
+          <caption>Table 6 · SI cross-validation performance</caption>
+          <thead><tr>
+            <th data-type="text">Model</th><th data-type="num" data-sort="desc">Stratified 5-fold F1</th><th data-type="num">SD</th>
+            <th data-type="num">Repeated 5-fold F1</th><th data-type="num">SD</th>
+          </tr></thead>
+          <tbody>
+            <tr class="best"><td>BERT+LSTM</td><td class="num">0.9162</td><td class="num">0.007</td><td class="num">0.9148</td><td class="num">0.009</td></tr>
+            <tr><td>RoBERTa-base</td><td class="num">0.9017</td><td class="num">0.012</td><td class="num">0.9024</td><td class="num">0.010</td></tr>
+            <tr><td>BERT-base</td><td class="num">0.8986</td><td class="num">0.006</td><td class="num">0.8993</td><td class="num">0.010</td></tr>
+            <tr><td>XLNet-base</td><td class="num">0.8904</td><td class="num">0.008</td><td class="num">0.8896</td><td class="num">0.014</td></tr>
+            <tr><td>ELECTRA-base</td><td class="num">0.8863</td><td class="num">0.006</td><td class="num">0.8860</td><td class="num">0.016</td></tr>
+            <tr><td>ALBERT-base-v2</td><td class="num">0.8833</td><td class="num">0.011</td><td class="num">0.8828</td><td class="num">0.014</td></tr>
+            <tr><td>BERT+LSTM+Attn.</td><td class="num">0.8791</td><td class="num">0.010</td><td class="num">0.8783</td><td class="num">0.008</td></tr>
+            <tr><td>DistilBERT-base</td><td class="num">0.8712</td><td class="num">0.006</td><td class="num">0.8705</td><td class="num">0.015</td></tr>
+            <tr><td>MobileBERT</td><td class="num">0.7844</td><td class="num">0.013</td><td class="num">0.7840</td><td class="num">0.014</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MH PANE -->
+    <div class="task-pane" id="pane-mh">
+      <div class="stat-row">
+        <div class="stat-pill">Best F1: <b>DistilRoBERTa — 0.905</b></div>
+        <div class="stat-pill">Fastest: <b>TinyBERT — 171.5s</b></div>
+        <div class="stat-pill">Best balance: <b>MiniLM — 0.901 F1 @ 263.8s</b></div>
+        <div class="stat-pill">AUC range: <b>0.908 – 0.931</b></div>
+      </div>
+
+      <div class="chart-card" style="margin-top:1px;">
+        <h4>MH compact-model efficiency profile</h4>
+        <div class="sub">5-FOLD CROSS-VALIDATION F1 VS. TRAINING TIME</div>
+        <div class="chart-canvas-wrap"><canvas id="chart-mh-eff"></canvas></div>
+      </div>
+
+      <div class="table-wrap" style="margin-top:20px;">
+        <table class="data sortable" id="table-mh">
+          <caption>Table 7 · MH cross-validation performance (5-fold mean, vs. weak labels)</caption>
+          <thead><tr>
+            <th data-type="text">Model</th><th data-type="num" data-sort="desc">F1</th><th data-type="num">Accuracy</th>
+            <th data-type="num">AUC</th><th data-type="num">Precision</th><th data-type="num">Time (s)</th>
+          </tr></thead>
+          <tbody>
+            <tr class="best"><td>DistilRoBERTa</td><td class="num">0.905</td><td class="num">0.909</td><td class="num">0.931</td><td class="num">0.903</td><td class="num">731.78</td></tr>
+            <tr><td>DistilBERT</td><td class="num">0.903</td><td class="num">0.907</td><td class="num">0.930</td><td class="num">0.901</td><td class="num">521.05</td></tr>
+            <tr><td>MiniLM</td><td class="num">0.901</td><td class="num">0.904</td><td class="num">0.928</td><td class="num">0.891</td><td class="num">263.84</td></tr>
+            <tr><td>ELECTRA</td><td class="num">0.898</td><td class="num">0.898</td><td class="num">0.913</td><td class="num">0.865</td><td class="num">272.00</td></tr>
+            <tr><td>TinyBERT</td><td class="num">0.887</td><td class="num">0.890</td><td class="num">0.908</td><td class="num">0.877</td><td class="num">171.51</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note"><b>Note —</b> MH scores above reflect agreement with the LLM-generated weak-labeling function, not human-adjudicated ground truth — the weak labeler itself scored only 0.431 positive-class F1 against human adjudication (Table 1). High AUC means models separate LLM-positive from LLM-negative examples well; it does not mean the MH construct is solved.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= SYNTHESIS ============================= -->
+<section id="synthesis">
+  <div class="container">
+    <div class="section-head"><span class="sec-no">§06</span><div class="section-head-text">
+      <p class="kicker">Cross-Task Synthesis</p>
+      <h2 class="section-title">SI and MH are not interchangeable detection tasks</h2>
+      <p class="section-desc">SI targets a narrow, self-disclosure construct with stronger human agreement but is vulnerable to subtle false negatives. MH captures a broader weak-labeling function that is easier for models to reproduce than for humans to accept as strict self-disclosure.</p>
+    </div></div>
+
+    <div class="compare-cols">
+      <div>
+        <h4 style="color:var(--si);">SI benchmark</h4>
+        <div class="compare-row"><div class="k">Construct</div><div class="v">Narrower — requires self-directed suicidal ideation or passive desire to die.</div></div>
+        <div class="compare-row"><div class="k">Dominant risk</div><div class="v">False negatives for subtle, indirect, or context-dependent SI.</div></div>
+        <div class="compare-row"><div class="k">Best signal</div><div class="v">BERT+LSTM under stratified CV; RoBERTa under holdout.</div></div>
+        <div class="compare-row"><div class="k">Efficiency</div><div class="v">DistilBERT — strong holdout performance at lowest transformer training time.</div></div>
+        <div class="compare-row"><div class="k">Deployment</div><div class="v">Requires conservative interpretation and high-sensitivity human review if used for screening research.</div></div>
+      </div>
+      <div>
+        <h4 style="color:var(--mh);">MH benchmark</h4>
+        <div class="compare-row"><div class="k">Construct</div><div class="v">Broader — includes self-directed mental health symptoms and distress.</div></div>
+        <div class="compare-row"><div class="k">Dominant risk</div><div class="v">False positives for awareness, advocacy, metaphor, humor, third-person discussion.</div></div>
+        <div class="compare-row"><div class="k">Best signal</div><div class="v">DistilRoBERTa under stratified 5-fold CV.</div></div>
+        <div class="compare-row"><div class="k">Efficiency</div><div class="v">TinyBERT is fastest; MiniLM offers the strongest speed–performance balance.</div></div>
+        <div class="compare-row"><div class="k">Deployment</div><div class="v">Requires calibration to avoid over-classifying general discourse as self-disclosure.</div></div>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--font-display); font-weight:600; font-size:1.2rem; margin:36px 0 14px;">Structured error sources</h3>
+    <div class="grid grid-2">
+      <div style="padding:20px;">
+        <b style="color:var(--si);">SI false negatives</b>
+        <p class="small" style="font-size:.85rem; line-height:1.7; margin-top:8px;">Short posts, indirect death-wish language, quoted or context-dependent statements, ambiguous expressions of despair that are pragmatic rather than lexical signals.</p>
+      </div>
+      <div style="padding:20px;">
+        <b style="color:var(--mh);">MH false positives</b>
+        <p class="small" style="font-size:.85rem; line-height:1.7; margin-top:8px;">Awareness campaigns, discussion of public figures, support messages directed at others, and metaphorical uses of terms like "depressing" or "panic."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= GOVERNANCE ============================= -->
+<section id="governance">
+  <div class="container">
+    <div class="section-head"><span class="sec-no">§07</span><div class="section-head-text">
+      <p class="kicker">Deployment &amp; Governance</p>
+      <h2 class="section-title">Who can run this, and what should it be used for?</h2>
+      <p class="section-desc">In AT Protocol-style architectures, hosting, relays, clients, labelers, and algorithms may all be run by different actors — a mental health classifier could serve very different roles depending on who deploys it.</p>
+    </div></div>
+
+    <div class="grid grid-3">
+      <div class="contrib-card" style="border-top-color:var(--good);">
+        <svg class="icon ic" style="color:var(--good); width:24px;height:24px;"><use href="#i-check-circle"/></svg>
+        <h3>Defensible near-term use</h3>
+        <p>Aggregate research and tool evaluation. Compact models (DistilBERT, MiniLM, TinyBERT) lower the barrier for independent researchers and community operators to run and audit the system.</p>
+      </div>
+      <div class="contrib-card" style="border-top-color:var(--gold);">
+        <svg class="icon ic" style="color:var(--gold); width:24px;height:24px;"><use href="#i-warn"/></svg>
+        <h3>Requires safeguards</h3>
+        <p>Any individual-level SI use needs human review, crisis-response protocols, opt-in governance, and clear accountability for false positives and false negatives.</p>
+      </div>
+      <div class="contrib-card" style="border-top-color:var(--bad);">
+        <svg class="icon ic" style="color:var(--bad); width:24px;height:24px;"><use href="#i-block"/></svg>
+        <h3>Not appropriate</h3>
+        <p>Automated MH intervention — many positive weak labels correspond to public discourse rather than genuine personal distress.</p>
+      </div>
+    </div>
+    <div class="note"><b>Note —</b> efficiency should not be confused with readiness for intervention. Compact models can reproduce weak labels quickly, but sensitive deployment still requires human-grounded calibration, transparent oversight, and task-specific validation.</div>
+  </div>
+</section>
+
+<!-- ============================= LIMITATIONS ============================= -->
+<section id="limitations">
+  <div class="container">
+    <div class="section-head"><span class="sec-no">§08</span><div class="section-head-text">
+      <p class="kicker">Limitations &amp; Future Work</p>
+      <h2 class="section-title">What this benchmark does not (yet) show</h2>
+    </div></div>
+
+    <div id="accordion">
+      <div class="acc-item open">
+        <div class="acc-head"><span>Keyword-triggered retrieval</span><span class="plus">+</span></div>
+        <div class="acc-body"><div class="acc-body-inner">Lexicon-based collection increases the density of relevant content but may miss implicit, coded, or context-dependent disclosures — particularly indirect SI expressed across reply chains. Future work: semantic retrieval, classifier-in-the-loop sampling, active learning.</div></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-head"><span>Limited human-grounded validation</span><span class="plus">+</span></div>
+        <div class="acc-body"><div class="acc-body-inner">Validation covered only stratified subsets. The low chance-corrected MH agreement (κ = 0.222) means MH scores should not be read as estimates of performance against a human-grounded construct. Future work needs larger human-grounded test sets and diverse annotators.</div></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-head"><span>Post-level, not longitudinal</span><span class="plus">+</span></div>
+        <div class="acc-body"><div class="acc-body-inner">The benchmark does not model user trajectories, repeated disclosures, escalation, or temporal language change. Longitudinal modeling could help risk-sensitive analysis but raises stronger privacy and consent concerns.</div></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-head"><span>No interpretability or ablations</span><span class="plus">+</span></div>
+        <div class="acc-body"><div class="acc-body-inner">The evaluation emphasizes predictive performance and efficiency but lacks token attribution, counterfactual editing, and component-level ablations of retrieval, prompts, and validation sampling.</div></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-head"><span>Time- and platform-bound findings</span><span class="plus">+</span></div>
+        <div class="acc-body"><div class="acc-body-inner">Results reflect Bluesky during the May–June 2025 collection window and may shift with platform language, demographics, affordances, and moderation practices. Replication across windows and other AT Protocol services is needed.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= CITE ============================= -->
+<section id="cite">
+  <div class="container">
+    <div class="section-head"><span class="sec-no">§09</span><div class="section-head-text">
+      <p class="kicker">Citation</p>
+      <h2 class="section-title">BibTeX</h2>
+      <p class="section-desc">Accepted at HICSS-60. A preprint will be posted to arXiv shortly — this entry will be updated with the arXiv ID, and later the DOI, once available.</p>
+    </div></div>
+    <div class="cite-box">
+      <button class="copy-btn" id="copy-bibtex">Copy</button>
+      <pre id="bibtex-text">@article{chhetri2026bluesky,
+  title     = {Building Trustworthy Mental Health Benchmarks on Bluesky:
+               A Validation-Aware Weak-Supervision Framework},
+  author    = {Chhetri, Gaurab and Dutta, Anandi and Das, Subasish},
+  year      = {2026},
+  journal   = {arXiv preprint},
+  note      = {Accepted at HICSS-60},
+  keywords  = {suicidal ideation detection, mental health NLP,
+               weak-supervision systems, decentralized social media,
+               label validation}
+}</pre>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-inner">
+    <p>© 2027 GAURAB CHHETRI, ANANDI DUTTA, SUBASISH DAS · TEXAS STATE UNIVERSITY</p>
+    <div class="footer-links">
+      <a href="#">Paper</a>
+      <a href="#cite">Cite</a>
+    </div>
+  </div>
+</footer>
+
+<button id="back-to-top" aria-label="Back to top"><svg class="icon"><use href="#i-up"/></svg></button>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="assets/script.js"></script>
+</body>
+</html>
