@@ -3,6 +3,12 @@
 <p align="center"><strong>Accepted at HICSS-60</strong></p>
 
 <p align="center">
+  <a href="https://arxiv.org/abs/2609.22696"><img src="https://img.shields.io/badge/arXiv-2609.22696-b31b1b.svg" alt="arXiv"></a>
+  &nbsp;
+  <a href="https://ai-in-transportation-lab.github.io/mh-sui-hicss/"><img src="https://img.shields.io/badge/Website-Live-2ea44f.svg" alt="Website"></a>
+</p>
+
+<p align="center">
   <a href="https://scholar.google.com/citations?user=NRzdAVEAAAAJ&amp;hl=en">Gaurab Chhetri</a><sup>1</sup>
   &nbsp;&nbsp;·&nbsp;&nbsp;
   <a href="https://scholar.google.com/citations?user=x55wcQIAAAAJ&amp;hl=en">Anandi Dutta</a><sup>2</sup>
